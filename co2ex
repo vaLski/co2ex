@@ -1,0 +1,117 @@
+#!/bin/bash
+
+espeak_path=$(which espeak)
+if [ -z "${espeak_path}" ]; then
+	echo "WARNING: espeak not found. Voice will be disabled."
+fi
+
+function usage {
+	echo "Use: ${0} comfortable_apnea_time [pause_decrease_offset] [draw_me_a_table]"
+	echo -e "\tcomfortable_apnea_time - Integer in seconds."
+	echo -e "\trelax_time_decrease_offset - Integer in seconds. Default 15."
+	echo -e "\tdraw_me_a_table - String. If third argument is supplied, tool will simply draw the training table."
+	exit 1
+}
+
+function error {
+	echo -e "ERROR: ${1}\n"
+	usage
+}
+
+if [ -z "${1}" ]; then
+	error "Blank comfortable_apnea_time"
+fi
+if [[ ! "${1}" =~ ^[0-9]+$ ]]; then
+	error "Incorrect comfortable_apnea_time. Should be in seconds."
+fi
+
+if [ ! -z "${2}" ]; then
+	if [[ ! "${1}" =~ ^[0-9]+$ ]]; then
+		error "Incorrect pause_decrease_offset. Should be in seconds."
+	fi
+	relax_time_decrease_offset="${2}"
+else
+	relax_time_decrease_offset=15
+fi
+
+comfortable_apnea_time="${1}"
+let relax_time=${comfortable_apnea_time}+${relax_time_decrease_offset}
+
+function speak_to_me {
+	if [[ "${1}" =~ ^[0-9]+$ ]]; then
+		echo -n "${1}, "
+	else
+		echo -n "${1}"
+	fi
+	if [ ! -z "${espeak_path}" ]; then
+		"${espeak_path}" "${1}" 2>/dev/null
+	fi
+}
+
+function count_down {
+	if [ ! -z "${2}" ]; then
+		speak_to_me "${2}"
+	fi
+	for i in $(seq 1 ${1} | tac); do
+		speak_to_me "${i}"
+		sleep 0.2
+	done
+	speak_to_me "Go."
+}
+
+function draw_table {
+	for test_num in $(seq 1 9); do
+		if [ "${test_num}" == 9 ]; then
+			echo "Apnea #${test_num} - ${comfortable_apnea_time} seconds apnea, THE END."
+			exit 0
+		fi
+
+		echo -e "Apnea #${test_num} - ${comfortable_apnea_time} seconds apnea, ${relax_time} seconds relax time."
+		if [ "${relax_time}" -gt 15 ]; then
+			let relax_time=${relax_time}-${relax_time_decrease_offset}
+		fi
+	done
+}
+
+function start_excercise {
+	count_down 10 "Starting excersies, with ${comfortable_apnea_time} seconds apnea, in ... "
+	for test_num in $(seq 1 9); do
+		echo
+		speak_to_me "Starting apnea test number ${test_num}. Hold your breath, now."
+		echo -n -e "\nApnea ${test_num} with ${relax_time} relax afterwards. Apnea remaining time ... "
+		for second in $(seq 1 ${comfortable_apnea_time} | tac); do
+			echo -n "${second}, "
+			if [ "${second}" == 5 ]; then
+				speak_to_me "5 more seconds, to go. "
+			fi
+			sleep 1
+		done
+		echo
+	
+		if [ "${test_num}" == 9 ]; then
+			speak_to_me "Recovery breathing now. C O 2 levels, excercise completed. Congratulations. Well done."
+			exit 0
+		fi
+		speak_to_me "Recovery breathing now. You have ${relax_time} seconds, to take a rest." 2>/dev/null
+		echo -n -e "\nApnea ${test_num} remaining time to relax ... "
+		for second in $(seq 1 ${relax_time} | tac); do
+			echo -n "${second}, "
+			if [ "${second}" -lt 11 ]; then
+				count_down 10 "The rest is over in "
+				break
+			fi
+			sleep 1
+		done
+		if [ "${relax_time}" -gt 15 ]; then
+			let relax_time=${relax_time}-${relax_time_decrease_offset}
+		fi
+	done
+}
+
+if [ -z "${3}" ]; then
+	start_excercise
+else
+	draw_table
+fi
+
+exit 0
