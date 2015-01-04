@@ -72,8 +72,8 @@ Software Requirements
 	bash
 	espeak - for voice
 
-COPYRIGHTS/LICENSE
-==================
+Copyrights and licenses
+=======================
 
 Whatever :)
 
