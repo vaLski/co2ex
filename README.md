@@ -49,22 +49,22 @@ Here is an example table that the program follows:
 How to use it
 =============
 
-$ ./co2ex 
-Use: ./co2ex comfortable_apnea_time [pause_decrease_offset] [draw_me_a_table]
-		comfortable_apnea_time - Integer in seconds.
-		relax_time_decrease_offset - Integer in seconds. Default 15.
-		draw_me_a_table - String. If third argument is supplied, tool will simply draw the training table.
-$ ./co2ex 90 15 draw_me_a_table
-Apnea #1 - 90 seconds apnea, 105 seconds relax time.
-Apnea #2 - 90 seconds apnea, 90 seconds relax time.
-Apnea #3 - 90 seconds apnea, 75 seconds relax time.
-Apnea #4 - 90 seconds apnea, 60 seconds relax time.
-Apnea #5 - 90 seconds apnea, 45 seconds relax time.
-Apnea #6 - 90 seconds apnea, 30 seconds relax time.
-Apnea #7 - 90 seconds apnea, 15 seconds relax time.
-Apnea #8 - 90 seconds apnea, 15 seconds relax time.
-Apnea #9 - 90 seconds apnea, THE END.
-$ 
+	$ ./co2ex 
+	Use: ./co2ex comfortable_apnea_time [pause_decrease_offset] [draw_me_a_table]
+			comfortable_apnea_time - Integer in seconds.
+			relax_time_decrease_offset - Integer in seconds. Default 15.
+			draw_me_a_table - String. If third argument is supplied, tool will simply draw the training table.
+	$ ./co2ex 90 15 draw_me_a_table
+	Apnea #1 - 90 seconds apnea, 105 seconds relax time.
+	Apnea #2 - 90 seconds apnea, 90 seconds relax time.
+	Apnea #3 - 90 seconds apnea, 75 seconds relax time.
+	Apnea #4 - 90 seconds apnea, 60 seconds relax time.
+	Apnea #5 - 90 seconds apnea, 45 seconds relax time.
+	Apnea #6 - 90 seconds apnea, 30 seconds relax time.
+	Apnea #7 - 90 seconds apnea, 15 seconds relax time.
+	Apnea #8 - 90 seconds apnea, 15 seconds relax time.
+	Apnea #9 - 90 seconds apnea, THE END.
+	$ 
 
 Software Requirements
 =====================
